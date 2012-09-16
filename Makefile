@@ -17,6 +17,8 @@ update:
 	( if [ -d ${TARGET} ] ; then svn rm --force ${TARGET} ; fi ) && \
 	rm -rf ${TARGET} && \
 	mv ${UPDATE}/${TARGET} ${TARGET} && \
+	(cd ${TARGET} && perl -p -i -e 's/-1ubuntu2flexiant/.2-1flexiant/g;' debian/changelog && \
+	../onlypackage libfreerdp1 libfreerdp-plugins-standard ) && \
 	svn add ${TARGET} && \
 	/bin/rm -rf ${UPDATE}
 

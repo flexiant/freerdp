@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+my $infile = "debian/control";
+my $outfile = $infile.".tmp";
+my %packages;
+
+foreach my $p (@ARGV)
+{
+    $packages{$p}++;
+}
+
+my $ifh;
+my $ofh;
+my $line;
+open ($ifh, "<$infile") || die ("Cannot open $infile: $!");
+open ($ofh, ">$outfile") || die ("Cannot open $outfile: $!");
+my $skipping = 0;
+my $afterblank = 0;
+while ($line = <$ifh>)
+{
+    chomp ($line);
+    if ($line =~ /^\s*$/)
+    {
+	$afterblank = 1;
+	$skipping = 0;
+	print $ofh "\n";
+	next;
+    }
+    if ($afterblank)
+    {
+	$afterblank = 0;
+	$skipping = 0;
+	if ($line =~ /^Package:\s+(\S+)\s*$/)
+	{
+	    my $pn = $1;
+	    $skipping = 1 unless defined($packages{$pn});
+	}
+    }
+    print $ofh "#" if ($skipping);
+    print $ofh "$line\n";
+}
+close ($ifh);
+close ($ofh);
+rename ($outfile, $infile);
