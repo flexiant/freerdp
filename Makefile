@@ -9,17 +9,18 @@ all:
 	@echo "   'cd ${TARGET}', then normal make commands to make ${TARGET}"	
 
 update:	
-	/bin/rm -rf ${UPDATE}
+	/bin/rm -rf ${UPDATE} && \
 	/bin/mkdir -p ${UPDATE} && \
 	( cd ${UPDATE} && \
 	git clone git://git.alex.org.uk/${TARGET}.git && \
 	/bin/rm -rf ${TARGET}/.git ) && \
-	( if [ -d ${TARGET} ] ; then svn rm --force ${TARGET} ; fi ) && \
+	( if [ -d ${TARGET} ] ; then svn rm --force ${TARGET} ; fi )  && \
 	rm -rf ${TARGET} && \
-	mv ${UPDATE}/${TARGET} ${TARGET} && \
+	echo "Moving new target into place"
+	mv ${UPDATE}/${TARGET} ${TARGET}
+	svn add ${TARGET}
 	(cd ${TARGET} && perl -p -i -e 's/-1ubuntu2flexiant/.2-1flexiant/g;' debian/changelog && \
-	../onlypackage libfreerdp1 libfreerdp-plugins-standard ) && \
-	svn add ${TARGET} && \
+	../onlypackage libfreerdp1 libfreerdp-plugins-standard )
 	/bin/rm -rf ${UPDATE}
 
 clean:
