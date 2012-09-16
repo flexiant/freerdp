@@ -19,8 +19,7 @@ update:
 	echo "Moving new target into place"
 	mv ${UPDATE}/${TARGET} ${TARGET}
 	svn add ${TARGET}
-	(cd ${TARGET} && perl -p -i -e 's/-1ubuntu2flexiant/.2-1flexiant/g;' debian/changelog && \
-	../onlypackage libfreerdp1 libfreerdp-plugins-standard )
+	(cd ${TARGET} && perl -p -i -e 's/-1ubuntu2flexiant/.2-1flexiant/g;' debian/changelog)
 	/bin/rm -rf ${UPDATE}
 
 clean:

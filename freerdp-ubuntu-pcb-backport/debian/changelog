@@ -1,4 +1,4 @@
-freerdp (1.0.1-1ubuntu2flexiant1) natty; urgency=low
+freerdp (1.0.1.2-1flexiant1) natty; urgency=low
 
   * Add backport of preconnect blob changes
 
